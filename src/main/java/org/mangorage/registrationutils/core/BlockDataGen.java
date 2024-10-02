@@ -48,10 +48,10 @@ public class BlockDataGen extends BlockStateProvider {
     }
 
 
-    public void slabBlockTint(SlabBlock block, ResourceLocation slab, boolean includeBlockItem) {
+    public void slabBlockTint(SlabBlock slab, ResourceLocation tintTexture, boolean includeBlockItem) {
 
         var top = models()
-                .cubeAll(name(block) + "_top", slab)
+                .cubeAll(name(slab) + "_top", tintTexture)
                 .element()
                 .from(0, 8, 0)
                 .to(16, 16, 16)
@@ -59,7 +59,7 @@ public class BlockDataGen extends BlockStateProvider {
                 .end();
 
         var bottom = models()
-                .cubeAll(name(block) + "_bottom", slab)
+                .cubeAll(name(slab) + "_bottom", tintTexture)
                 .element()
                 .from(0, 0, 0)
                 .to(16, 8, 16)
@@ -67,20 +67,20 @@ public class BlockDataGen extends BlockStateProvider {
                 .end();
 
         var doubled = models()
-                .cubeAll(name(block) + "_double", slab)
+                .cubeAll(name(slab) + "_double", tintTexture)
                 .element()
                 .from(0, 0, 0)
                 .to(16, 16, 16)
                 .allFaces((d, a) -> a.texture("#all").tintindex(0))
                 .end();
 
-        getVariantBuilder(block)
+        getVariantBuilder(slab)
                 .partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).addModels(new ConfiguredModel(bottom))
                 .partialState().with(SlabBlock.TYPE, SlabType.TOP).addModels(new ConfiguredModel(top))
                 .partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).addModels(new ConfiguredModel(doubled));
 
         if (includeBlockItem)
-            simpleBlockItem(block, bottom);
+            simpleBlockItem(slab, bottom);
     }
 
     @Override
