@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.mangorage.registrationutils.core.Registration;
 import org.mangorage.registrationutils.utils.PairEnumRegistryObjectMap;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -19,32 +20,9 @@ public class RegistrationUtils {
 
     // Define mod id in a common place for everything to reference
     public static final String MODID = "registrationutils";
-    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
-    private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MODID);
-    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 
-    public static final PairEnumRegistryObjectMap<Color, Block, Item, Block, BlockItem> WOOD_PLANKS = PairEnumRegistryObjectMap.create(
-            Color.class,
-            "wood_planks",
-            BLOCKS,
-            ITEMS,
-            e -> new Block(BlockBehaviour.Properties.of()),
-            (e, m) -> new BlockItem(m.get(e).get(), new Item.Properties())
-    );
 
-    public static final PairEnumRegistryObjectMap<Color, Block, Item, SlabBlock, BlockItem> WOOD_SLAB = PairEnumRegistryObjectMap.create(
-            Color.class,
-            "wood_slab",
-            BLOCKS,
-            ITEMS,
-            e -> new SlabBlock(BlockBehaviour.Properties.of()),
-            (e, m) -> new BlockItem(m.get(e).get(), new Item.Properties())
-    );
-
-    public RegistrationUtils() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        BLOCKS.register(modEventBus);
-        ITEMS.register(modEventBus);
+    public RegistrationUtils(FMLJavaModLoadingContext context) {
+        Registration.init(context.getModEventBus());
     }
 }

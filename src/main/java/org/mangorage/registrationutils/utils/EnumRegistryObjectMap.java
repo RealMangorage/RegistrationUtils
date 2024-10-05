@@ -5,8 +5,8 @@ import net.minecraftforge.registries.RegistryObject;
 import org.mangorage.registrationutils.IRegistrable;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -15,28 +15,31 @@ public final class EnumRegistryObjectMap<E extends Enum<E> & IRegistrable, B, O 
         return new EnumRegistryObjectMap<>(enumClass, majorId, creator, deferredRegister);
     }
 
+    public record Entry<K, V>(K key, V value) {}
 
-
-    private final Map<E, RegistryObject<O>> backingMap = new HashMap<>();
+    private final Function<Integer, E> enumGetter;
+    private final RegistryObject<O>[] backingMap;
+    private final Set<Entry<E, RegistryObject<O>>> entrySet = new HashSet<>();
 
     private EnumRegistryObjectMap(Class<E> enumClass, String majorId, Function<E, O> creator, DeferredRegister<B> deferredRegister) {
-        for (E enumConstant : enumClass.getEnumConstants()) {
-            backingMap.put(
-                    enumConstant,
-                    deferredRegister.register(enumConstant.getSubId() + "_" + majorId, () -> creator.apply(enumConstant))
-            );
+        var list = enumClass.getEnumConstants();
+        this.backingMap = new RegistryObject[list.length];
+        this.enumGetter = i -> list[i];
+        for (E enumConstant : list) {
+            this.backingMap[enumConstant.ordinal()] = deferredRegister.register(enumConstant.getSubId() + "_" + majorId, () -> creator.apply(enumConstant));
+            this.entrySet.add(new Entry<>(enumConstant, this.backingMap[enumConstant.ordinal()]));
         }
     }
 
     public RegistryObject<O> get(E enumType) {
-        return backingMap.get(enumType);
+        return backingMap[enumType.ordinal()];
     }
 
     public Collection<RegistryObject<O>> getAll() {
-        return backingMap.values();
+        return List.of(backingMap);
     }
 
-    public Set<Map.Entry<E, RegistryObject<O>>> entrySet() {
-        return backingMap.entrySet();
+    public Set<Entry<E, RegistryObject<O>>> entrySet() {
+        return entrySet;
     }
 }

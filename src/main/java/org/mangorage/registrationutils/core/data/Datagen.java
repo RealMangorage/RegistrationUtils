@@ -1,4 +1,4 @@
-package org.mangorage.registrationutils.core;
+package org.mangorage.registrationutils.core.data;
 
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
