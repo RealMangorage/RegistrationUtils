@@ -1,6 +1,5 @@
 package org.mangorage.registrationutils.core.data;
 
-import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -9,7 +8,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.properties.Half;
-import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
@@ -18,13 +16,12 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.mangorage.registrationutils.RegistrationUtils;
 import org.mangorage.registrationutils.core.Registration;
-import org.mangorage.registrationutils.core.data.core.IDefaultModelProvider;
+import org.mangorage.registrationutils.core.data.core.TextureMap;
+import org.mangorage.registrationutils.core.data.models.TintableBlockModel;
 import org.mangorage.registrationutils.core.data.models.TintableSlabModel;
 
 public class BlockDataGen extends BlockStateProvider {
     private static final ResourceLocation BLOCK_MODEL = ResourceLocation.fromNamespaceAndPath("minecraft", "block/block");
-    private static final IDefaultModelProvider TINTABLE_SLABS = new TintableSlabModel();
-
 
     public BlockDataGen(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, RegistrationUtils.MODID, exFileHelper);
@@ -95,45 +92,12 @@ public class BlockDataGen extends BlockStateProvider {
                 .allFaces((d, a) -> a.texture("#all").tintindex(0))
                 .end();
 
-        TINTABLE_SLABS.generate(models());
-    }
-
-    public void fullBlockWithTint(Block block, ResourceLocation tintTexture, boolean includeBlockItem) {
-        var model = models().cubeAll(name(block), tintTexture)
-                .element()
-                .from(0, 0, 0)
-                .to(16, 16, 16)
-                .allFaces((d, f) -> f.tintindex(0).texture("#all"))
-                .end();
-
-        getVariantBuilder(block)
-                .partialState()
-                .addModels(new ConfiguredModel(model));
-
-        if (includeBlockItem)
-            simpleBlockItem(block, model);
+        TintableBlockModel.of().generate(models());
+        TintableSlabModel.of().generate(models());
     }
 
     public void slabBlockTint(SlabBlock block, ResourceLocation tintTexture, boolean includeBlockItem) {
-        var top = models()
-                .withExistingParent(name(block) + "_top", TINTABLE_SLABS.getParent(0))
-                .texture("all", tintTexture);
-
-        var bottom = models()
-                .withExistingParent(name(block) + "_bottom", TINTABLE_SLABS.getParent(1))
-                .texture("all", tintTexture);
-
-        var doubled = models()
-                .withExistingParent(name(block) + "_double", TINTABLE_SLABS.getParent(2))
-                .texture("all", tintTexture);
-
-        getVariantBuilder(block)
-                .partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).addModels(new ConfiguredModel(bottom))
-                .partialState().with(SlabBlock.TYPE, SlabType.TOP).addModels(new ConfiguredModel(top))
-                .partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).addModels(new ConfiguredModel(doubled));
-
-        if (includeBlockItem)
-            simpleBlockItem(block, bottom);
+        TintableSlabModel.of().create(this, block, name(block), TextureMap.create().texture("all", tintTexture), includeBlockItem);
     }
 
     public void stairBlockTint(StairBlock block, ResourceLocation tintTexture, boolean includeBlockItem) {
@@ -181,8 +145,17 @@ public class BlockDataGen extends BlockStateProvider {
 
         buildParents();
 
+
+
         Registration.WOOD_PLANKS.getRightMap().getAll().forEach(b -> {
-            fullBlockWithTint(b.get(), blockTexture(b.get(), "wood"), true);
+            TintableBlockModel.of().create(
+                    this,
+                    b.get(),
+                    name(b.get()),
+                    TextureMap.create()
+                            .textureAll(d -> blockTexture(b.get(), "wood"))
+                            .texture("particle", blockTexture(b.get(), "wood")),
+                    true);
         });
 
         Registration.WOOD_SLABS.getRightMap().getAll().forEach(b -> {
