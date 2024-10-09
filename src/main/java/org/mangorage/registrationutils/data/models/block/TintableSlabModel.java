@@ -1,7 +1,6 @@
-package org.mangorage.registrationutils.core.data.models;
+package org.mangorage.registrationutils.data.models.block;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
@@ -9,12 +8,13 @@ import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import org.mangorage.registrationutils.RegistrationUtils;
-import org.mangorage.registrationutils.core.data.core.IDefaultModelProvider;
-import org.mangorage.registrationutils.core.data.core.TextureMap;
+import org.mangorage.registrationutils.data.core.IBlockWithName;
+import org.mangorage.registrationutils.data.core.IDefaultModelProvider;
+import org.mangorage.registrationutils.data.core.TextureMap;
 
-import static org.mangorage.registrationutils.core.data.models.ModelConstants.BLOCK_MODEL;
+import static org.mangorage.registrationutils.data.models.ModelConstants.BLOCK_MODEL;
 
-public class TintableSlabModel implements IDefaultModelProvider<BlockModelBuilder> {
+public final class TintableSlabModel implements IDefaultModelProvider<BlockModelBuilder> {
     private static final IDefaultModelProvider<BlockModelBuilder> TINTABLE_SLABS = new TintableSlabModel();
 
     public static IDefaultModelProvider<BlockModelBuilder> of() {
@@ -84,16 +84,16 @@ public class TintableSlabModel implements IDefaultModelProvider<BlockModelBuilde
     }
 
     @Override
-    public void create(BlockStateProvider blockStateProvider, Block block, String name, TextureMap textureMap, boolean includeBlockItem) {
-        var models = applyParents(blockStateProvider, name, textureMap);
+    public void create(BlockStateProvider blockStateProvider, IBlockWithName blockWithName, TextureMap textureMap, boolean includeBlockItem) {
+        var models = applyParents(blockStateProvider, blockWithName.name(), textureMap);
 
-        blockStateProvider.getVariantBuilder(block)
+        blockStateProvider.getVariantBuilder(blockWithName.block())
                 .partialState().with(SlabBlock.TYPE, SlabType.TOP).addModels(new ConfiguredModel(models[0]))
                 .partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).addModels(new ConfiguredModel(models[1]))
                 .partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).addModels(new ConfiguredModel(models[2]));
 
         if (includeBlockItem)
-            blockStateProvider.simpleBlockItem(block, models[1]);
+            blockStateProvider.simpleBlockItem(blockWithName.block(), models[1]);
     }
 
 }

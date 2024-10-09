@@ -1,9 +1,10 @@
-package org.mangorage.registrationutils.core.data;
+package org.mangorage.registrationutils.core;
 
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.mangorage.registrationutils.RegistrationUtils;
+import org.mangorage.registrationutils.core.generators.BlockStateModelGenerator;
 
 @Mod.EventBusSubscriber(modid = RegistrationUtils.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Datagen {
@@ -13,6 +14,6 @@ public class Datagen {
         var output = gen.getPackOutput();
         var efh = event.getExistingFileHelper();
 
-        gen.addProvider(event.includeClient(), new BlockDataGen(output, efh));
+        gen.addProvider(event.includeClient(), new BlockStateModelGenerator(output, efh));
     }
 }

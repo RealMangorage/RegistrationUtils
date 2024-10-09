@@ -15,7 +15,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.mangorage.registrationutils.Color;
 import org.mangorage.registrationutils.utils.PairEnumRegistryObjectMap;
 
 import static org.mangorage.registrationutils.RegistrationUtils.MODID;

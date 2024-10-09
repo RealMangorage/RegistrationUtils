@@ -1,4 +1,4 @@
-package org.mangorage.registrationutils;
+package org.mangorage.registrationutils.utils;
 
 public interface IRegistrable {
     default String getSubId() {

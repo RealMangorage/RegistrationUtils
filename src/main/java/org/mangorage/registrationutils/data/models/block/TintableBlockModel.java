@@ -1,18 +1,18 @@
-package org.mangorage.registrationutils.core.data.models;
+package org.mangorage.registrationutils.data.models.block;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import org.mangorage.registrationutils.RegistrationUtils;
-import org.mangorage.registrationutils.core.data.core.IDefaultModelProvider;
-import org.mangorage.registrationutils.core.data.core.TextureMap;
+import org.mangorage.registrationutils.data.core.IBlockWithName;
+import org.mangorage.registrationutils.data.core.IDefaultModelProvider;
+import org.mangorage.registrationutils.data.core.TextureMap;
 
-import static org.mangorage.registrationutils.core.data.models.ModelConstants.BLOCK_MODEL;
+import static org.mangorage.registrationutils.data.models.ModelConstants.BLOCK_MODEL;
 
-public class TintableBlockModel implements IDefaultModelProvider<BlockModelBuilder> {
+public final class TintableBlockModel implements IDefaultModelProvider<BlockModelBuilder> {
     private static final TintableBlockModel TINTABLE_BLOCK_MODEL = new TintableBlockModel();
 
     public static TintableBlockModel of() {
@@ -43,13 +43,13 @@ public class TintableBlockModel implements IDefaultModelProvider<BlockModelBuild
     }
 
     @Override
-    public void create(BlockStateProvider blockStateProvider, Block block, String name, TextureMap textureMap, boolean includeBlockItems) {
-        var model = applyParents(blockStateProvider, name, textureMap)[0];
+    public void create(BlockStateProvider blockStateProvider, IBlockWithName blockWithName, TextureMap textureMap, boolean includeBlockItems) {
+        var model = applyParents(blockStateProvider, blockWithName.name(), textureMap)[0];
         blockStateProvider
-                .getVariantBuilder(block)
+                .getVariantBuilder(blockWithName.block())
                 .partialState()
                 .addModels(new ConfiguredModel(model));
         if (includeBlockItems)
-            blockStateProvider.simpleBlockItem(block, model);
+            blockStateProvider.simpleBlockItem(blockWithName.block(), model);
     }
 }

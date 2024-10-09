@@ -1,4 +1,4 @@
-package org.mangorage.registrationutils.core.data.core;
+package org.mangorage.registrationutils.data.core;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Direction;

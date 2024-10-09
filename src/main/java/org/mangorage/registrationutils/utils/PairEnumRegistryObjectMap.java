@@ -2,7 +2,6 @@ package org.mangorage.registrationutils.utils;
 
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
-import org.mangorage.registrationutils.IRegistrable;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;

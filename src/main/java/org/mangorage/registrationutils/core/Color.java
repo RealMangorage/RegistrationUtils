@@ -1,4 +1,6 @@
-package org.mangorage.registrationutils;
+package org.mangorage.registrationutils.core;
+
+import org.mangorage.registrationutils.utils.IRegistrable;
 
 public enum Color implements IRegistrable {
     GREEN(java.awt.Color.GREEN.getRGB()),

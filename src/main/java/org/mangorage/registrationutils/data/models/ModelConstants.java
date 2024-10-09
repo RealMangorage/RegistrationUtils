@@ -1,4 +1,4 @@
-package org.mangorage.registrationutils.core.data.models;
+package org.mangorage.registrationutils.data.models;
 
 import net.minecraft.resources.ResourceLocation;
 
