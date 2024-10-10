@@ -21,39 +21,42 @@ public class BlockStateModelGenerator extends BlockStateProvider {
     }
 
     protected void buildParents() {
-        TintableBlockModel.of().generate(models());
-        TintableSlabModel.of().generate(models());
-        TintableStairsModel.of().generate(models());
+        TintableBlockModel.of().generate(this);
+        TintableSlabModel.of().generate(this);
+        TintableStairsModel.of().generate(this);
     }
 
     @Override
     protected void registerStatesAndModels() {
         buildParents();
 
-        Registration.WOOD_PLANKS.getRightMap().getAll().forEach(b -> {
+        Registration.WOOD_PLANKS.getAllLeftHolder().forEach(holder -> {
+            var b = holder.getRight().get();
             TintableBlockModel.of().create(
                     this,
-                    IBlockWithName.of(b.get()),
+                    IBlockWithName.of(b),
                     TextureMap.create()
                             .textureAll(d -> Helpers.getBlockTexture(RegistrationUtils.MODID, "wood"))
                             .texture("particle", Helpers.getBlockTexture(RegistrationUtils.MODID, "wood")),
                     true);
         });
 
-        Registration.WOOD_SLABS.getRightMap().getAll().forEach(b -> {
+        Registration.WOOD_SLABS.getAllLeftHolder().forEach(holder -> {
+            var b = holder.getRight().get();
             TintableSlabModel.of().create(
                     this,
-                    IBlockWithName.of(b.get()),
+                    IBlockWithName.of(b),
                     TextureMap.create()
                             .texture("all", Helpers.getBlockTexture(RegistrationUtils.MODID, "wood")),
                     true
             );
         });
 
-        Registration.WOOD_STAIRS.getRightMap().getAll().forEach(b -> {
+        Registration.WOOD_STAIRS.getAllLeftHolder().forEach(holder -> {
+            var b = holder.getRight().get();
             TintableStairsModel.of().create(
                     this,
-                    IBlockWithName.of(b.get()),
+                    IBlockWithName.of(b),
                     TextureMap.create()
                             .texture("all", Helpers.getBlockTexture(RegistrationUtils.MODID, "wood")),
                     true

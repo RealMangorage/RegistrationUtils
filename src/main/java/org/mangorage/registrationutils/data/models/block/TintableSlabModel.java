@@ -4,20 +4,19 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import org.mangorage.registrationutils.RegistrationUtils;
 import org.mangorage.registrationutils.data.core.IBlockWithName;
-import org.mangorage.registrationutils.data.core.IDefaultModelProvider;
+import org.mangorage.registrationutils.data.core.IDefaultBlockStateModelProvider;
 import org.mangorage.registrationutils.data.core.TextureMap;
 
 import static org.mangorage.registrationutils.data.models.ModelConstants.BLOCK_MODEL;
 
-public final class TintableSlabModel implements IDefaultModelProvider<BlockModelBuilder> {
-    private static final IDefaultModelProvider<BlockModelBuilder> TINTABLE_SLABS = new TintableSlabModel();
+public final class TintableSlabModel implements IDefaultBlockStateModelProvider {
+    private static final IDefaultBlockStateModelProvider TINTABLE_SLABS = new TintableSlabModel();
 
-    public static IDefaultModelProvider<BlockModelBuilder> of() {
+    public static IDefaultBlockStateModelProvider of() {
         return TINTABLE_SLABS;
     }
 
@@ -28,8 +27,8 @@ public final class TintableSlabModel implements IDefaultModelProvider<BlockModel
     private TintableSlabModel() {}
 
     @Override
-    public void generate(BlockModelProvider models) {
-        models
+    public void generate(BlockStateProvider provider) {
+        provider.models()
                 .withExistingParent("tintable_slab_top", BLOCK_MODEL)
                 .texture("particle", "#all")
                 .element()
@@ -38,7 +37,7 @@ public final class TintableSlabModel implements IDefaultModelProvider<BlockModel
                 .allFaces((d, a) -> a.texture("#all").tintindex(0))
                 .end();
 
-        models
+        provider.models()
                 .withExistingParent("tintable_slab_bottom", BLOCK_MODEL)
                 .texture("particle", "#all")
                 .element()
@@ -47,7 +46,7 @@ public final class TintableSlabModel implements IDefaultModelProvider<BlockModel
                 .allFaces((d, a) -> a.texture("#all").tintindex(0))
                 .end();
 
-        models
+        provider.models()
                 .withExistingParent("tintable_slab_double", BLOCK_MODEL)
                 .texture("particle", "#all")
                 .element()

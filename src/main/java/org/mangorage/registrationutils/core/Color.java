@@ -1,8 +1,9 @@
 package org.mangorage.registrationutils.core;
 
-import org.mangorage.registrationutils.utils.IRegistrable;
 
-public enum Color implements IRegistrable {
+import org.mangorage.registrationutils.utils.IRegistryEnum;
+
+public enum Color implements IRegistryEnum {
     GREEN(java.awt.Color.GREEN.getRGB()),
     BLUE(java.awt.Color.BLUE.getRGB());
 
@@ -13,5 +14,10 @@ public enum Color implements IRegistrable {
 
     public int getColor() {
         return color;
+    }
+
+    @Override
+    public String getSubId() {
+        return toString().toLowerCase();
     }
 }

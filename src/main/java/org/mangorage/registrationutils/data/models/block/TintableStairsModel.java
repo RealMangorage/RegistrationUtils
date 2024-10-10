@@ -7,20 +7,19 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import org.mangorage.registrationutils.RegistrationUtils;
 import org.mangorage.registrationutils.data.core.IBlockWithName;
-import org.mangorage.registrationutils.data.core.IDefaultModelProvider;
+import org.mangorage.registrationutils.data.core.IDefaultBlockStateModelProvider;
 import org.mangorage.registrationutils.data.core.TextureMap;
 
 import static org.mangorage.registrationutils.data.models.ModelConstants.BLOCK_MODEL;
 
-public class TintableStairsModel implements IDefaultModelProvider<BlockModelBuilder> {
-    private static final IDefaultModelProvider<BlockModelBuilder> TINTABLE_STAIRS_MODEl = new TintableStairsModel();
+public final class TintableStairsModel implements IDefaultBlockStateModelProvider {
+    private static final IDefaultBlockStateModelProvider TINTABLE_STAIRS_MODEl = new TintableStairsModel();
 
-    public static IDefaultModelProvider<BlockModelBuilder> of() {
+    public static IDefaultBlockStateModelProvider of() {
         return TINTABLE_STAIRS_MODEl;
     }
 
@@ -31,9 +30,10 @@ public class TintableStairsModel implements IDefaultModelProvider<BlockModelBuil
     private TintableStairsModel() {}
 
     @Override
-    public void generate(BlockModelProvider models) {
-        models
+    public void generate(BlockStateProvider provider) {
+        provider.models()
                 .withExistingParent("tintable_stairs", BLOCK_MODEL)
+                .texture("particle", "#all")
                 .transforms()
                 .transform(ItemDisplayContext.GUI)
                 .rotation(30, 135, 0)
@@ -52,8 +52,9 @@ public class TintableStairsModel implements IDefaultModelProvider<BlockModelBuil
                 .allFaces((d, a) -> a.texture("#all").tintindex(0))
                 .end();
 
-        models
+        provider.models()
                 .withExistingParent("tintable_stairs_inner", BLOCK_MODEL)
+                .texture("particle", "#all")
                 .element()
                 .from(0, 0, 0)
                 .to(16, 8, 16)
@@ -70,8 +71,9 @@ public class TintableStairsModel implements IDefaultModelProvider<BlockModelBuil
                 .allFaces((d, a) -> a.texture("#all").tintindex(0))
                 .end();
 
-        models
+        provider.models()
                 .withExistingParent("tintable_stairs_outer", BLOCK_MODEL)
+                .texture("particle", "#all")
                 .element()
                 .from(0, 0, 0)
                 .to(16, 8, 16)

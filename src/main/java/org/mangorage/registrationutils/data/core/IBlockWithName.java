@@ -9,7 +9,7 @@ public interface IBlockWithName {
     static IBlockWithName of(Block block) {
         var key = ForgeRegistries.BLOCKS.getKey(block);
         var texture = key.withPath(id -> ModelProvider.BLOCK_FOLDER + "/" + id);
-        return new BlockWithName(
+        return new BlockWithNameImpl(
                 key.getPath(),
                 block,
                 key,

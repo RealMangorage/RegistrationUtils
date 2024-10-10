@@ -10,45 +10,15 @@ import org.mangorage.registrationutils.core.Registration;
 public class ClientEvents {
     @SubscribeEvent
     public static void registerBlock(RegisterColorHandlersEvent.Block event) {
-        Registration.WOOD_PLANKS.getRightMap().entrySet().forEach(e -> {
-            event.register(
-                    ColorProvider.of(e.key().getColor()),
-                    e.value().get()
-            );
-        });
-        Registration.WOOD_SLABS.getRightMap().entrySet().forEach(e -> {
-            event.register(
-                    ColorProvider.of(e.key().getColor()),
-                    e.value().get()
-            );
-        });
-        Registration.WOOD_STAIRS.getRightMap().entrySet().forEach(e -> {
-            event.register(
-                    ColorProvider.of(e.key().getColor()),
-                    e.value().get()
-            );
+        Registration.getAllBlocks().forEach(c -> {
+            event.register(ColorProvider.of(c.getLeft().getColor()), c.getRight().get());
         });
     }
 
     @SubscribeEvent
     public static void registerItem(RegisterColorHandlersEvent.Item event) {
-        Registration.WOOD_PLANKS.getLeftMap().entrySet().forEach(e -> {
-            event.register(
-                    ColorProvider.of(e.key().getColor()),
-                    e.value().get()
-            );
-        });
-        Registration.WOOD_SLABS.getRightMap().entrySet().forEach(e -> {
-            event.register(
-                    ColorProvider.of(e.key().getColor()),
-                    e.value().get()
-            );
-        });
-        Registration.WOOD_STAIRS.getRightMap().entrySet().forEach(e -> {
-            event.register(
-                    ColorProvider.of(e.key().getColor()),
-                    e.value().get()
-            );
+        Registration.getAllItems().forEach(c -> {
+            event.register(ColorProvider.of(c.getLeft().getColor()), c.getRight().get());
         });
     }
 }

@@ -2,17 +2,16 @@ package org.mangorage.registrationutils.data.models.block;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import org.mangorage.registrationutils.RegistrationUtils;
 import org.mangorage.registrationutils.data.core.IBlockWithName;
-import org.mangorage.registrationutils.data.core.IDefaultModelProvider;
+import org.mangorage.registrationutils.data.core.IDefaultBlockStateModelProvider;
 import org.mangorage.registrationutils.data.core.TextureMap;
 
 import static org.mangorage.registrationutils.data.models.ModelConstants.BLOCK_MODEL;
 
-public final class TintableBlockModel implements IDefaultModelProvider<BlockModelBuilder> {
+public final class TintableBlockModel implements IDefaultBlockStateModelProvider {
     private static final TintableBlockModel TINTABLE_BLOCK_MODEL = new TintableBlockModel();
 
     public static TintableBlockModel of() {
@@ -22,8 +21,8 @@ public final class TintableBlockModel implements IDefaultModelProvider<BlockMode
     private final ResourceLocation PARENT = ResourceLocation.fromNamespaceAndPath(RegistrationUtils.MODID, "tintable_block");
 
     @Override
-    public void generate(BlockModelProvider models) {
-        models
+    public void generate(BlockStateProvider provider) {
+        provider.models()
                 .withExistingParent("tintable_block", BLOCK_MODEL)
                 .element()
                 .from(0, 0, 0)
