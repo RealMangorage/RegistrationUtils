@@ -10,15 +10,16 @@ import org.mangorage.registrationutils.core.Registration;
 public class ClientEvents {
     @SubscribeEvent
     public static void registerBlock(RegisterColorHandlersEvent.Block event) {
-        Registration.getAllBlocks().forEach(c -> {
+        Registration.LIST.getRightList().forEach(c -> {
             event.register(ColorProvider.of(c.getLeft().getColor()), c.getRight().get());
         });
     }
 
     @SubscribeEvent
     public static void registerItem(RegisterColorHandlersEvent.Item event) {
-        Registration.getAllItems().forEach(c -> {
+        Registration.LIST.getLeftList().forEach(c -> {
             event.register(ColorProvider.of(c.getLeft().getColor()), c.getRight().get());
         });
+
     }
 }

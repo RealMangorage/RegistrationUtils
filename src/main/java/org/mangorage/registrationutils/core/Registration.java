@@ -1,6 +1,5 @@
 package org.mangorage.registrationutils.core;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -16,12 +15,9 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.mangorage.registrationutils.utils.EnumPairHolderMap;
 import org.mangorage.registrationutils.utils.EnumPairRegistryMap;
 import org.mangorage.registrationutils.utils.IEnumPairHolder;
-
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.BiConsumer;
 
 import static org.mangorage.registrationutils.RegistrationUtils.MODID;
@@ -33,12 +29,13 @@ public class Registration {
     private static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
 
-    private static final List<IEnumPairHolder<Color, RegistryObject<Block>>> ALL_BLOCKS = new ArrayList<>();
-    private static final List<IEnumPairHolder<Color, RegistryObject<Item>>> ALL_ITEMS = new ArrayList<>();
+    private static final EnumPairHolderMap<Color, RegistryObject<Block>, RegistryObject<Item>> LIST_MUTABLE = EnumPairHolderMap.create();
+    public static final EnumPairHolderMap<Color, RegistryObject<Block>, RegistryObject<Item>> LIST = LIST_MUTABLE.immutable();
+
 
     private static final BiConsumer<IEnumPairHolder<Color, RegistryObject<Block>>,  IEnumPairHolder<Color, RegistryObject<Item>>> LIST_HANDLER = (a, b) -> {
-        ALL_BLOCKS.add(a);
-        ALL_ITEMS.add(b);
+        LIST_MUTABLE.addRight(a);
+        LIST_MUTABLE.addLeft(b);
     };
 
     public static final EnumPairRegistryMap<Color, Block, Item, Block, BlockItem> WOOD_PLANKS = EnumPairRegistryMap.create(
@@ -76,7 +73,7 @@ public class Registration {
                 .icon(Items.OAK_PLANKS::getDefaultInstance)
                 .title(Component.literal("Registration Utils Tab"))
                 .displayItems((itemDisplayParameters, output) -> {
-                    ALL_ITEMS.forEach(h -> {
+                    LIST.getLeftList().forEach(h -> {
                         output.accept(h.getRight().get());
                     });
                 })
@@ -87,13 +84,5 @@ public class Registration {
         BLOCKS.register(bus);
         ITEMS.register(bus);
         TABS.register(bus);
-    }
-
-    public static List<IEnumPairHolder<Color, RegistryObject<Block>>> getAllBlocks() {
-        return ImmutableList.copyOf(ALL_BLOCKS);
-    }
-
-    public static List<IEnumPairHolder<Color, RegistryObject<Item>>> getAllItems() {
-        return ImmutableList.copyOf(ALL_ITEMS);
     }
 }
